@@ -1,34 +1,74 @@
-<h1>Angular Google Maps (AGM) Demo</h1>
-<p><a href="https://angular-maps.com/" target="_blank">Official Website</a></p>
+<div class="container">
+  <h1>Angular Google Maps (AGM) Demo</h1>
+  <p>
+    <a href="https://angular-maps.com/" target="_blank">Official Website</a>
+  </p>
 
-<agm-map 
-  [latitude]="lat"
-  [longitude]="lng"
-  [zoom]="zoom"
-  [disableDefaultUI]="false"
-  [zoomControl]="false"
-  (mapClick)="mapClicked($event)">
+  <div class="row mb-5">
+    <div class="col-md-8">
+      <agm-map
+        [latitude]="lat"
+        [longitude]="lng"
+        [zoom]="zoom"
+        [disableDefaultUI]="false"
+        [zoomControl]="false"
+        (mapClick)="mapClicked($event)"
+      >
+        <agm-marker
+          *ngFor="let m of markers; let i = index"
+          (markerClick)="clickedMarker(m.label, i)"
+          [latitude]="m.lat"
+          [longitude]="m.lng"
+          [label]="m.label"
+          [markerDraggable]="m.draggable"
+          (dragEnd)="markerDragEnd(m, $event)"
+        >
+          <agm-info-window>
+            <strong>Latitude: {{ m.lat }}</strong>
+            <br />
+            <strong>Longitude: {{ m.lng }}</strong>
+          </agm-info-window>
+        </agm-marker>
 
-  <agm-marker 
-      *ngFor="let m of markers; let i = index"
-      (markerClick)="clickedMarker(m.label, i)"
-      [latitude]="m.lat"
-      [longitude]="m.lng"
-      [label]="m.label"
-      [markerDraggable]="m.draggable"
-      (dragEnd)="markerDragEnd(m, $event)">
-      
-    <agm-info-window>
-      <strong>InfoWindow content</strong>
-    </agm-info-window>
-    
-  </agm-marker>
-  
-  <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
-      [radius]="5000"
-      [fillColor]="'red'"
-      [circleDraggable]="true"
-      [editable]="true">
-  </agm-circle>
-
-</agm-map>
+        <agm-circle
+          [latitude]="lat + 0.3"
+          [longitude]="lng"
+          [radius]="5000"
+          [fillColor]="'red'"
+          [circleDraggable]="true"
+          [editable]="true"
+        >
+        </agm-circle>
+      </agm-map>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <form (ngSubmit)="updateCoordinates(f)" #f="ngForm" class="form-group">
+        <div class="form-group">
+          <label for="lat">Latitude</label>
+          <input
+            type="number"
+            id="lat"
+            name="lat"
+            placeholder="Latitude"
+            ngModel
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="lng">Longitude</label>
+          <input
+            type="number"
+            id="lng"
+            name="lng"
+            placeholder="Longitude"
+            ngModel
+            class="form-control"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </div>
+</div>
