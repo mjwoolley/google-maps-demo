@@ -12,37 +12,24 @@
         [zoom]="zoom"
         [disableDefaultUI]="false"
         [zoomControl]="false"
-        (mapClick)="mapClicked($event)"
       >
         <agm-marker
-          *ngFor="let m of markers; let i = index"
-          (markerClick)="clickedMarker(m.label, i)"
-          [latitude]="m.lat"
-          [longitude]="m.lng"
-          [label]="m.label"
-          [markerDraggable]="m.draggable"
-          (dragEnd)="markerDragEnd(m, $event)"
+          [latitude]="lat"
+          [longitude]="lng"
+          [markerDraggable]="false"
         >
-          <agm-info-window>
-            <strong>Latitude: {{ m.lat }}</strong>
+          <agm-info-window [isOpen]="false">
+            <strong>Latitude: {{ lat }}</strong>
             <br />
-            <strong>Longitude: {{ m.lng }}</strong>
+            <strong>Longitude: {{ lng }}</strong>
+            <br />
+            <strong> {{ address }} </strong>
           </agm-info-window>
         </agm-marker>
-
-        <agm-circle
-          [latitude]="lat + 0.3"
-          [longitude]="lng"
-          [radius]="5000"
-          [fillColor]="'red'"
-          [circleDraggable]="true"
-          [editable]="true"
-        >
-        </agm-circle>
       </agm-map>
     </div>
   </div>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-md-4">
       <form (ngSubmit)="updateCoordinates(f)" #f="ngForm" class="form-group">
         <div class="form-group">
@@ -70,5 +57,8 @@
         <button type="submit" class="btn btn-primary">Update</button>
       </form>
     </div>
-  </div>
+  </div> -->
+  <app-geocode-lookup
+    (coordinatesUpdated)="onCoordinatesUpdated($event)"
+  ></app-geocode-lookup>
 </div>
